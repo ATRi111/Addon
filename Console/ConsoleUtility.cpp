@@ -28,9 +28,9 @@ void ConsoleUtility::PrintBuffer(int** buffer, int width, int height)
 		for (int x = 0; x < width; x++)
 		{
 			SetColor(buffer[x][y]);
-			cout << Block << endl;
+			cout << Block;
 		}
+		ResetColor();
 		cout << endl;
 	}
-	ResetColor();
 }
