@@ -3,8 +3,8 @@
 #include<vector>
 #include<string>
 
-class Vector2;
-class Vector2Int;
+struct Vector2;
+struct Vector2Int;
 
 struct VectorUtility
 {
