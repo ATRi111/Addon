@@ -3,7 +3,7 @@
 int main() 
 {
     ConsoleUtility::DisableWindowResize();
-    ConsoleUtility::SetColor(FOREGROUND_BLUE| BACKGROUND_RED);
+    ConsoleUtility::SetColor(BACKGROUND_RED);
 
     for (int i = 0; i < 10; i++)
     {
@@ -13,6 +13,6 @@ int main()
         }
         std::cout << std::endl;
     }
-    ConsoleUtility::SetColor(ConsoleUtility::DefaultColor);
+    ConsoleUtility::ResetColor();
     return 0;
 }
