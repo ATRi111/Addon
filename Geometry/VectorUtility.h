@@ -5,11 +5,12 @@
 
 namespace Tools
 {
-	class Vector2;
-	class Vector2Int;
+	struct Vector2;
+	struct Vector2Int;
 
-	struct VectorUtility
+	class VectorUtility
 	{
+	public:
 		static double _2PI;
 		static std::vector<std::string> SplitVector(std::string s);
 		static double ToAngle(Vector2 v);

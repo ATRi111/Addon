@@ -9,11 +9,11 @@
 
 namespace Tools
 {
-	struct PolygonGenerator
+	class PolygonGenerator
 	{
-		void Generate(Vector2* vertices, int vertexCount, float xMin, float xMax, float yMin, float yMax);
-	private:
 		static std::mt19937 engine;
+	public:
+		void Generate(Vector2* vertices, int vertexCount, float xMin, float xMax, float yMin, float yMax);
 	};
 
 	struct PolarityComparer

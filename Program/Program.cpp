@@ -1,7 +1,7 @@
 #include "Program.h"
 using namespace Tools;
 
-int main()
+int main() 
 {
-
+    return 0;
 }
