@@ -1,4 +1,5 @@
 #include "PolaritySorting.h"
+using namespace Tools;
 
 void PolygonGenerator::Generate(Vector2* vertices, int vertexCount, float xMin, float xMax, float yMin, float yMax)
 {

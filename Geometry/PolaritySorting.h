@@ -7,16 +7,19 @@
 #include"Vector2.h"
 #include"VectorUtility.h"
 
-struct PolygonGenerator
+namespace Tools
 {
-	void Generate(Vector2* vertices, int vertexCount, float xMin, float xMax, float yMin, float yMax);
-private:
-	static std::mt19937 engine;
-};
+	struct PolygonGenerator
+	{
+		void Generate(Vector2* vertices, int vertexCount, float xMin, float xMax, float yMin, float yMax);
+	private:
+		static std::mt19937 engine;
+	};
 
-struct PolarityComparer
-{
-	Vector2 center;
-	PolarityComparer(Vector2 center);
-	bool Compare(Vector2 a, Vector2 b) const;
-};
+	struct PolarityComparer
+	{
+		Vector2 center;
+		PolarityComparer(Vector2 center);
+		bool Compare(Vector2 a, Vector2 b) const;
+	};
+}

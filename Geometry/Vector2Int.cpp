@@ -1,4 +1,5 @@
 #include "Vector2Int.h"
+using namespace Tools;
 
 const Vector2Int Vector2Int::Zero = Vector2Int(0, 0);
 const Vector2Int Vector2Int::One = Vector2Int(1, 1);

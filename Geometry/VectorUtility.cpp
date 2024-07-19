@@ -3,6 +3,7 @@
 #include"Vector2.h"
 #include"Vector2Int.h"
 using namespace std;
+using namespace Tools;
 
 double VectorUtility::_2PI = 2 * M_PI;
 vector<string> VectorUtility::SplitVector(string s)
