@@ -135,9 +135,11 @@
     <ClInclude Include="DelegateHeader.h" />
     <ClInclude Include="Equal.h" />
     <ClInclude Include="Func.h" />
+    <ClInclude Include="IAction.h" />
+    <ClInclude Include="IFunc.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Func.cpp" />
+    <ClCompile Include="Delegate.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

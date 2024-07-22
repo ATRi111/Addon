@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Func.h">
+    <ClInclude Include="IFunc.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DelegateHeader.h">
@@ -27,9 +27,15 @@
     <ClInclude Include="Equal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Func.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IAction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Func.cpp">
+    <ClCompile Include="Delegate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
