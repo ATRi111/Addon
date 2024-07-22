@@ -9,7 +9,7 @@ namespace Tools
 	template<typename I, typename TResult, typename ... Args>
 	class MemberFunc;
 
-	//represents any function with a return value
+	//represents any function(including member function) with a return value
 	template<typename TResult,typename ... Args>
 	class IFunc
 	{
@@ -18,8 +18,8 @@ namespace Tools
 
 		bool Equal(const StaticFunc<TResult, Args...>& other);
 
-		template<typename I>
-		bool Equal(const MemberFunc<I, TResult, Args...>& other);
+		template<typename I_, typename TResult_, typename ... Args_>	//these templates represents other's type
+		bool Equal(const MemberFunc<I_, TResult_, Args_...>& other);
 	};
 
 	//represents a static/global function with a return value
@@ -43,7 +43,7 @@ namespace Tools
 		}
 	};
 
-	//represents a member function with a return value; I represetns the class of the instancePtr
+	//represents a member function with a return value; I_ represetns the class of the instancePtr
 	template<typename I, typename TResult,typename ... Args>
 	class MemberFunc :public IFunc<TResult, Args...>
 	{
@@ -59,7 +59,7 @@ namespace Tools
 		{
 			return (instancePtr->*F)(args...);
 		}
-		bool operator==(const MemberFunc<TResult, Args...>& other)
+		bool operator==(const MemberFunc<I, TResult, Args...>& other)
 		{
 			return F == other.F && instancePtr == other.instancePtr;
 		}
@@ -75,10 +75,10 @@ namespace Tools
 	}
 
 	template<typename TResult, typename ... Args>
-	template<typename I>
-	bool IFunc<TResult, Args...>::Equal(const MemberFunc<I, TResult, Args...>& other)
+	template<typename I_, typename TResult_, typename ... Args_>
+	bool IFunc<TResult, Args...>::Equal(const MemberFunc<I_, TResult_, Args_...>& other)
 	{
-		MemberFunc<I, TResult, Args...>* p = dynamic_cast<MemberFunc<I, TResult, Args...>* > (this);
+		MemberFunc<I_, TResult_, Args_...>* p = dynamic_cast<MemberFunc<I_, TResult_, Args_...>* > (this);
 		if (p)
 			return p->operator==(other);
 		return false;

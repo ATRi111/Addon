@@ -24,15 +24,12 @@ bool StataicCompare(int a, int b)
 int main()
 {
     StaticFunc<bool,int,int> F1(StataicCompare);
-
     IFunc<bool, int, int>* p1 = &F1;
 
-    cout << p1->Equal(F1) << endl;
-
-    Comparer c;
-    MemberFunc<Comparer, bool, int, int> F2(&c, &Comparer::Compare);
+    Comparer c1, c2;
+    MemberFunc<Comparer, bool, int, int> F2(&c1, &Comparer::Compare);
+    MemberFunc<Comparer, bool, int, int> F3(&c2, &Comparer::Compare);
     
-    //cout << p1->Equal(F2) << endl;
 
     return 0;
 }
