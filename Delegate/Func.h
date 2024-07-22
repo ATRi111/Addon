@@ -14,14 +14,19 @@ namespace Tools
 	public:
 		Func()
 		{
-			funcs = std::list<IFunc<TResult, Args...>>();
+			funcs = std::list<IFunc<TResult, Args...>*>();
 		}
-		TResult Invoke(Args... args)
+		void Invoke(Args... args)
 		{
-			for (IFunc<TResult, Args...> F : funcs)
+			for (IFunc<TResult, Args...>* F : funcs)
 			{
-				F.Invoke(args...);
+				F->Invoke(args...);
 			}
+		}
+		//get the return value of the first element in funcs
+		TResult FirstReturnValue(Args... args)
+		{
+			return (*funcs.begin())->Invoke(args...);
 		}
 
 		void Add(TResult(*F)(Args...))
@@ -37,11 +42,11 @@ namespace Tools
 		}
 		bool Remove(TResult(*F)(Args...))
 		{
-			StaticFunc<TResult, Args...> F = StaticFunc<TResult, Args...>(F);
+			StaticFunc<TResult, Args...> S = StaticFunc<TResult, Args...>(F);
 			typename std::list<IFunc<TResult, Args...>*>::iterator it;
 			for (it = funcs.begin(); it != funcs.end(); it++)
 			{
-				if (*it->Equal(F))
+				if ((*it)->Equal(S))
 				{
 					delete *it;
 					funcs.erase(it);
@@ -53,11 +58,11 @@ namespace Tools
 		template<typename I>
 		bool Remove(I* instancePtr, TResult(I::* F)(Args...))
 		{
-			MemberFunc<I, TResult, Args...> F = MemberFunc<I, TResult, Args...>(F);
+			MemberFunc<I, TResult, Args...> M(instancePtr, F);
 			typename std::list<IFunc<TResult, Args...>*>::iterator it;
 			for (it = funcs.begin(); it != funcs.end(); it++)
 			{
-				if (*it->Equal(F))
+				if ((*it)->Equal(M))
 				{
 					delete* it;
 					funcs.erase(it);
@@ -78,7 +83,6 @@ namespace Tools
 		{
 			return funcs.size();
 		}
-
 		~Func()
 		{
 			for (IFunc<TResult, Args...>* p : funcs)

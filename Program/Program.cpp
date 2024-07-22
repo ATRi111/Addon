@@ -23,20 +23,22 @@ bool StataicCompare(int a, int b)
 
 int main()
 {
-    StaticFunc<bool,int,int> F1(StataicCompare);
-    IFunc<bool, int, int>* p1 = &F1;
-
     Comparer c1, c2;
-    MemberFunc<Comparer, bool, int, int> F2(&c1, &Comparer::Compare);
-    MemberFunc<Comparer, bool, int, int> F3(&c2, &Comparer::Compare);
     
-    cout << F1.Equal(F2) << endl;
-    cout << F2.Equal(F1) << endl;
-    cout << F2.Equal(F3) << endl;
-    cout << F3.Equal(F2) << endl;
-    cout << F1.Equal(F1) << endl;
-    cout << F2.Equal(F2) << endl;
-    cout << F3.Equal(F3) << endl;
+    Func<int> Fs;
+    for (int i = 0; i < 3; i++)
+    {
+        Fs.Add(&c1, &Comparer::Print);
+        Fs.Invoke();
+        cout << endl;
+    }
+    cout << endl;
+    for (int i = 0; i < 3; i++)
+    {
+        Fs.Remove(&c1, &Comparer::Print);
+        Fs.Invoke();
+        cout << endl;
+    }
 
     return 0;
 }
