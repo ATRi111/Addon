@@ -1,4 +1,4 @@
 #pragma once
-#include"Geometry.h"
+#include"GeometryHeader.h"
 #include"ConsoleUtility.h"
-#include"Delegate.h"
+#include"DelegateHeader.h"

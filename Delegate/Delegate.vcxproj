@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Delegate.h" />
+    <ClInclude Include="DelegateHeader.h" />
+    <ClInclude Include="Equal.h" />
     <ClInclude Include="Func.h" />
   </ItemGroup>
   <ItemGroup>

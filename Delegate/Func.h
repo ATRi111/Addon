@@ -16,7 +16,8 @@ namespace Tools
 	public:
 		virtual TResult Invoke(Args... args) = 0;
 
-		bool Equal(const StaticFunc<TResult, Args...>& other);
+		template<typename TResult_, typename ... Args_>		//these templates represents other's type
+		bool Equal(const StaticFunc<TResult_, Args_...>& other);
 
 		template<typename I_, typename TResult_, typename ... Args_>	//these templates represents other's type
 		bool Equal(const MemberFunc<I_, TResult_, Args_...>& other);
@@ -64,25 +65,6 @@ namespace Tools
 			return F == other.F && instancePtr == other.instancePtr;
 		}
 	};
-
-	template<typename TResult, typename ... Args>
-	inline bool IFunc<TResult, Args...>::Equal(const StaticFunc<TResult, Args...>& other)
-	{
-		StaticFunc<TResult, Args...>* p = dynamic_cast<StaticFunc<TResult, Args...>*>(this);
-		if (p)
-			return p->operator==(other);
-		return false;
-	}
-
-	template<typename TResult, typename ... Args>
-	template<typename I_, typename TResult_, typename ... Args_>
-	bool IFunc<TResult, Args...>::Equal(const MemberFunc<I_, TResult_, Args_...>& other)
-	{
-		MemberFunc<I_, TResult_, Args_...>* p = dynamic_cast<MemberFunc<I_, TResult_, Args_...>* > (this);
-		if (p)
-			return p->operator==(other);
-		return false;
-	}
 
 	//a list of IFunc 
 	template<typename TResult, typename ... Args>

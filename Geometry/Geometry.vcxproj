@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GeometryHeader.h" />
     <ClInclude Include="PolaritySorting.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector2Int.h" />

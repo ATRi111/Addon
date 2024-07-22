@@ -30,6 +30,13 @@ int main()
     MemberFunc<Comparer, bool, int, int> F2(&c1, &Comparer::Compare);
     MemberFunc<Comparer, bool, int, int> F3(&c2, &Comparer::Compare);
     
+    cout << F1.Equal(F2) << endl;
+    cout << F2.Equal(F1) << endl;
+    cout << F2.Equal(F3) << endl;
+    cout << F3.Equal(F2) << endl;
+    cout << F1.Equal(F1) << endl;
+    cout << F2.Equal(F2) << endl;
+    cout << F3.Equal(F3) << endl;
 
     return 0;
 }

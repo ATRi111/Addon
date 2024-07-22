@@ -18,7 +18,13 @@
     <ClInclude Include="Func.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DelegateHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="Delegate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Equal.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

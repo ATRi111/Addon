@@ -27,7 +27,7 @@
     <ClInclude Include="VectorUtility.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
+    <ClInclude Include="GeometryHeader.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PolaritySorting.h">
