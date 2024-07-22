@@ -2,42 +2,74 @@
 using namespace std;
 using namespace Tools;
 
-class Comparer
+class EventSystem
 {
-public:
-    bool Compare(int a, int b)
+    static EventSystem* instance;
+    EventSystem()
     {
-        return a > b;
+
     }
-    void Print()
+public:
+    static EventSystem& Instance()
     {
-        cout << this << endl;
+        if (!instance)
+            instance = new EventSystem();
+        return *instance;
+    }
+
+    //arguments:current HP,max HP
+    Action<int, int> AfterPlayerHPChange;
+};
+
+EventSystem* EventSystem::instance = nullptr;
+
+class Player
+{
+    int HP;
+    EventSystem& eventSystem;
+public:
+    const int maxHP = 100;
+    Player()
+        :HP(maxHP), eventSystem(EventSystem::Instance())
+    {
+        eventSystem.AfterPlayerHPChange.Invoke(HP, maxHP);
+    }
+    void SetHP(int HP)
+    {
+        if (HP != this->HP)
+        {
+            this->HP = HP;
+            eventSystem.AfterPlayerHPChange.Invoke(HP, maxHP);
+        }
     }
 };
 
-bool StataicCompare(int a, int b)
+class Text
 {
-    return a > b;
-}
+    EventSystem& eventSystem;
+public:
+    Text() 
+        :eventSystem(EventSystem::Instance())
+    {
+        eventSystem.AfterPlayerHPChange.Add(this, &Text::AfterPlayerHPChange);
+    }
+    void AfterPlayerHPChange(int HP, int maxHP)
+    {
+        cout << HP << "/" << maxHP << endl;
+    }
+    ~Text()
+    {
+        eventSystem.AfterPlayerHPChange.Remove(this, &Text::AfterPlayerHPChange);
+    }
+};
 
 int main()
 {
-    Comparer c1, c2;
-    
-    Action<> Fs;
-    for (int i = 0; i < 3; i++)
+    Player player;
     {
-        Fs.Add(&c1, &Comparer::Print);
-        Fs.Invoke();
-        cout << endl;
+        Text text;
+        player.SetHP(50);
     }
-    cout << endl;
-    for (int i = 0; i < 3; i++)
-    {
-        Fs.Remove(&c1, &Comparer::Print);
-        Fs.Invoke();
-        cout << endl;
-    }
-
+    player.SetHP(80);
     return 0;
 }
