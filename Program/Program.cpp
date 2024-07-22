@@ -9,10 +9,9 @@ public:
     {
         return a > b;
     }
-    int Print()
+    void Print()
     {
         cout << this << endl;
-        return 1;
     }
 };
 
@@ -25,7 +24,7 @@ int main()
 {
     Comparer c1, c2;
     
-    Func<int> Fs;
+    Action<> Fs;
     for (int i = 0; i < 3; i++)
     {
         Fs.Add(&c1, &Comparer::Print);

@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="DelegateHeader.h" />
     <ClInclude Include="Equal.h" />

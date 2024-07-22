@@ -1,6 +1,7 @@
 #pragma once
 #include"Delegate.h"
-#include"Func.h"
+#include"IFunc.h"
+#include"IAction.h"
 
 namespace Tools
 {
@@ -19,6 +20,27 @@ namespace Tools
 	inline bool IFunc<TResult, Args...>::Equal(const MemberFunc<I_, TResult_, Args_...>& other) const
 	{
 		const MemberFunc<I_, TResult_, Args_...>* p = dynamic_cast<const MemberFunc<I_, TResult_, Args_...>*> (this);
+		if (p)
+			return p->operator==(other);
+		return false;
+	}
+
+
+	template<typename ...Args>
+	template<typename ...Args_>
+	inline bool IAction<Args...>::Equal(const StaticAction<Args_...>& other) const
+	{
+		const StaticAction<Args_...>* p = dynamic_cast<const StaticAction<Args_...>*>(this);
+		if (p)
+			return p->operator==(other);
+		return false;
+	}
+
+	template<typename ...Args>
+	template<typename I_, typename ...Args_>
+	inline bool IAction<Args...>::Equal(const MemberAction<I_, Args_...>& other) const
+	{
+		const MemberAction<I_, Args_...>* p = dynamic_cast<const MemberAction<I_, Args_...>*> (this);
 		if (p)
 			return p->operator==(other);
 		return false;

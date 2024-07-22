@@ -43,7 +43,7 @@ namespace Tools
 		}
 	};
 
-	//represents a member function with a return value; I_ represetns the class of the instancePtr
+	//represents a member function with a return value; I represetns the class of the instance
 	template<typename I, typename TResult,typename ... Args>
 	class MemberFunc :public IFunc<TResult, Args...>
 	{

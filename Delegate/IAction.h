@@ -13,7 +13,7 @@ namespace Tools
 	class IAction
 	{
 	public:
-		virtual void Invoke(Args... args) = 0 const;
+		virtual void Invoke(Args... args) const = 0;
 
 		template<typename ... Args_>
 		bool Equal(const StaticAction<Args_...>& other) const;
@@ -22,28 +22,28 @@ namespace Tools
 		bool Equal(const MemberAction<I_, Args_...>& other) const;
 	};
 
-	//represents a static/global function with a return value
+	//represents a static/global function without return value
 	template<typename ... Args>
 	class StaticAction :public IAction<Args...>
 	{
 		void(*F)(Args...);
 	public:
-		StaticAction(TResult(*F)(Args...))
+		StaticAction(void(*F)(Args...))
 			:F(F)
 		{
 
 		}
-		void Invoke(Args... args) override
+		void Invoke(Args... args) const override
 		{
 			return F(args...);
 		}
-		bool operator==(const StaticAction<Args...>& other)
+		bool operator==(const StaticAction<Args...>& other) const
 		{
 			return F == other.F;
 		}
 	};
 
-	//represents a member function with a return value; I_ represetns the class of the instancePtr
+	//represents a member function without return value; I represetns the class of the instance
 	template<typename I, typename ... Args>
 	class MemberAction :public IAction<Args...>
 	{
@@ -55,11 +55,11 @@ namespace Tools
 		{
 
 		}
-		void Invoke(Args... args) override
+		void Invoke(Args... args) const override
 		{
 			return (instancePtr->*F)(args...);
 		}
-		bool operator==(const MemberAction<I, Args...>& other)
+		bool operator==(const MemberAction<I, Args...>& other) const
 		{
 			return F == other.F && instancePtr == other.instancePtr;
 		}
