@@ -3,7 +3,6 @@
 #include"ITimer.h"
 #include"ILerp.h"
 #include"Delegate.h"
-#include"GameCycleBase.h"
 
 namespace Tools
 {
@@ -11,11 +10,10 @@ namespace Tools
     class Timer :ITimer
     {
     protected:
-        GameCycleBase* gameCycle;
         bool paused;
         bool completed;
         float time;
-        ILerp<TValue>* Lerp;
+        TLerp* Lerp;
         float duration;
         TValue origin, target;
         void Tick(float deltaTime);
@@ -25,19 +23,119 @@ namespace Tools
         Action<TValue> BeforeResume;
         Action<TValue> AfterCompelete;
         Action<TValue> OnTick;
-        bool Completed() const override;
-        float Duration() const override;
-        bool Paused() const override;
-        float Time() const override;
-        float Percent() const override;
-        TValue Origin() const;
-        TValue Target() const;
-        TValue Current() const;
-        void Start() override;
-        void Pause() override;
-        void Stop() override;
-        void Restart(bool fixedTime) override;
-        virtual void ForceComplete() override;
-        virtual void Reset(TValue origin, TValue target, float duration);
+
+        Timer(TValue origin, TValue target, float duration)
+            :origin(origin), target(target), duration(duration), time(0), paused(true), completed(false)
+        {
+            Lerp = new TLerp();
+        }
+#pragma region Getter
+        bool Completed() const override
+        {
+            return completed;
+        }
+        float Duration() const override
+        {
+            return duration;
+        }
+        bool Paused() const override
+        {
+            return paused;
+        }
+        float Time() const override
+        {
+            return time;
+        }
+        float Percent() const override
+        {
+            float temp = time / duration;
+            temp = (std::min)(temp, 1.0f);
+            temp = (std::max)(temp, 0.0f);
+            return temp;
+        }
+        TValue Origin() const
+        {
+            return origin;
+        }
+        TValue Target() const
+        {
+            return target;
+        }
+        TValue Current() const
+        {
+            return Lerp->Value(origin, target, Percent(), time, duration);
+        }
+#pragma endregion
+        void Start() override
+        {
+            if (paused)
+            {
+                paused = false;
+                BeforeResume.Invoke(Current());
+                gameCycle->AttachToGameCycle(this, &Timer<TValue, TLerp>::Tick);
+            }
+        }
+        void Pause() override
+        {
+            if (!paused)
+            {
+                paused = true;
+                BeforePause.Invoke(Current());
+                gameCycle->RemoveFromGameCycle(this, &Timer<TValue, TLerp>::Tick);
+            }
+        }
+        void Stop() override
+        {
+            time = 0;
+            Pause();
+        }
+        void Restart(bool fixedTime = true) override
+        {
+            if (fixedTime)
+                time -= duration;
+            else
+                time = 0;
+            Start();
+            SetCompleted(false);
+        }
+        virtual void ForceComplete() override
+        {
+            time = duration;
+            OnTick.Invoke(Current());
+            Paused();
+            SetCompleted(true);
+        }
+        virtual void Reset(TValue origin, TValue target, float duration)
+        {
+            Stop();
+            this->origin = origin;
+            this->target = target;
+            this->duration = duration;
+        }
     };
+
+    template<typename TValue, typename TLerp>
+    inline void Timer<TValue, TLerp>::Tick(float deltaTime)
+    {
+        time += deltaTime;
+        OnTick.Invoke(Current());
+        if (time >= duration)
+        {
+            Pause();
+            SetCompleted(true);
+        }
+    }
+
+    template<typename TValue, typename TLerp>
+    inline void Timer<TValue, TLerp>::SetCompleted(bool value)
+    {
+        if (completed != value)
+        {
+            completed = value;
+            if (value)
+            {
+                AfterCompelete.Invoke(Current());
+            }
+        }
+    }
 }

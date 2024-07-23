@@ -9,16 +9,16 @@ namespace Tools
 	template<typename ... Args>
 	class Action : public Delegate
 	{
-		//this class takes ownership of funcs; do not try to add existing pointer into funcs
-		std::list<IAction<Args...>*> funcs;
+		//this class takes ownership of actions; do not try to add existing pointer into actions
+		std::list<IAction<Args...>*> actions;
 	public:
 		Action()
 		{
-			funcs = std::list<IAction<Args...>*>();
+			actions = std::list<IAction<Args...>*>();
 		}
 		void Invoke(Args... args)
 		{
-			for (IAction<Args...>* F : funcs)
+			for (IAction<Args...>* F : actions)
 			{
 				F->Invoke(args...);
 			}
@@ -27,24 +27,34 @@ namespace Tools
 		void Add(void(*F)(Args...))
 		{
 			StaticAction<Args...>* p = new StaticAction<Args...>(F);
-			funcs.push_back(p);
+			actions.push_back(p);
 		}
 		template<typename I>
 		void Add(I* instancePtr, void(I::* F)(Args...))
 		{
 			MemberAction<I, Args...>* p = new MemberAction<I, Args...>(instancePtr, F);
-			funcs.push_back(p);
+			actions.push_back(p);
 		}
+		
+		void MoveTo(Action<Args ...>& other)
+		{
+			for (IAction<Args...>* p : actions)
+			{
+				other.actions.push_back(p);
+			}
+			actions.clear();
+		}
+
 		bool Remove(void(*F)(Args...))
 		{
 			StaticAction<Args...> S = StaticAction<Args...>(F);
 			typename std::list<IAction<Args...>*>::iterator it;
-			for (it = funcs.begin(); it != funcs.end(); it++)
+			for (it = actions.begin(); it != actions.end(); it++)
 			{
 				if ((*it)->Equal(S))
 				{
 					delete* it;
-					funcs.erase(it);
+					actions.erase(it);
 					return true;
 				}
 			}
@@ -55,12 +65,12 @@ namespace Tools
 		{
 			MemberAction<I, Args...> M(instancePtr, F);
 			typename std::list<IAction<Args...>*>::iterator it;
-			for (it = funcs.begin(); it != funcs.end(); it++)
+			for (it = actions.begin(); it != actions.end(); it++)
 			{
 				if ((*it)->Equal(M))
 				{
 					delete* it;
-					funcs.erase(it);
+					actions.erase(it);
 					return true;
 				}
 			}
@@ -68,19 +78,19 @@ namespace Tools
 		}
 		void Clear()
 		{
-			for (IAction<Args...>* p : funcs)
+			for (IAction<Args...>* p : actions)
 			{
 				delete p;
 			}
-			funcs.clear();
+			actions.clear();
 		}
 		int Count()
 		{
-			return funcs.size();
+			return actions.size();
 		}
 		~Action()
 		{
-			for (IAction<Args...>* p : funcs)
+			for (IAction<Args...>* p : actions)
 			{
 				delete p;
 			}

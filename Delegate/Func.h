@@ -40,6 +40,16 @@ namespace Tools
 			MemberFunc<I, TResult, Args...>* p = new MemberFunc<I, TResult, Args...>(instancePtr, F);
 			funcs.push_back(p);
 		}
+
+		void MoveTo(Func<TResult, Args ...>& other)
+		{
+			for (IFunc<TResult, Args...>* p : funcs)
+			{
+				other.funcs.push_back(p);
+			}
+			funcs.clear();
+		}
+
 		bool Remove(TResult(*F)(Args...))
 		{
 			StaticFunc<TResult, Args...> S = StaticFunc<TResult, Args...>(F);

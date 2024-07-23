@@ -134,6 +134,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseLerp.h" />
     <ClInclude Include="BaseTimer.h" />
     <ClInclude Include="GameCycleBase.h" />
     <ClInclude Include="ILerp.h" />
