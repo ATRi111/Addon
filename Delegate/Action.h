@@ -22,7 +22,7 @@ namespace Tools
 			for (it = actions.begin(); it != actions.end(); )
 			{
 				IAction<Args...>*  p = *it;
-				it++;	//even if p will be deleted in the code below ,it will not be effected 
+				it++;	//p might remove itself while being invoked 
 				p->Invoke(args...);
 			}
 		}
@@ -47,7 +47,8 @@ namespace Tools
 			}
 			actions.clear();
 		}
-
+		//WARN: it is dangerous for an IAction to call Remove;
+		//an IAction can only remove ITSELF from Action
 		bool Remove(void(*F)(Args...))
 		{
 			StaticAction<Args...> S = StaticAction<Args...>(F);
@@ -63,6 +64,8 @@ namespace Tools
 			}
 			return false;
 		}
+		//WARN: it is dangerous for an IAction to call Remove;
+		//an IAction can only remove ITSELF from Action
 		template<typename I>
 		bool Remove(I* instancePtr, void(I::* F)(Args...))
 		{

@@ -22,7 +22,7 @@ namespace Tools
 			for (it = funcs.begin(); it != funcs.end(); )
 			{
 				IFunc<TResult, Args...>* p = *it;
-				it++;	//even if p will be deleted in the code below ,it will not be effected 
+				it++;	//p might remove itself while being invoked
 				p->Invoke(args...);
 			}
 		}
@@ -52,7 +52,8 @@ namespace Tools
 			}
 			funcs.clear();
 		}
-
+		//WARN: it is dangerous for an IFunc to call Remove;
+		//an IFunc can only remove ITSELF from Func
 		bool Remove(TResult(*F)(Args...))
 		{
 			StaticFunc<TResult, Args...> S = StaticFunc<TResult, Args...>(F);
@@ -68,6 +69,8 @@ namespace Tools
 			}
 			return false;
 		}
+		//WARN: it is dangerous for an IFunc to call Remove;
+		//an IFunc can only remove ITSELF from Func
 		template<typename I>
 		bool Remove(I* instancePtr, TResult(I::* F)(Args...))
 		{
