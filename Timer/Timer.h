@@ -9,9 +9,10 @@ namespace Tools
     template<typename TValue, typename TLerp>
     class Timer :ITimer
     {
-    protected:
+    private:
         bool paused;
         bool completed;
+    protected:
         float time;
         TLerp* Lerp;
         float duration;

@@ -8,32 +8,38 @@ namespace Tools
 	class GameCycleBase
 	{
 	protected:
-		Action<float> cycle;
-		Action<float> temp;
+		Action<float> Cycle;
+		Action<float> WaitForAdd;
 	public:
 		virtual void Update(float deltaTime)
 		{
-			temp.MoveTo(cycle);
-			cycle.Invoke(deltaTime);
+			WaitForAdd.MoveTo(Cycle);
+			Cycle.Invoke(deltaTime);
 		}
 		void AttachToGameCycle(void(*CallBack)(float))
 		{
-			temp.Add(CallBack);
+			WaitForAdd.Add(CallBack);
 		}
 		template<typename I>
 		void AttachToGameCycle(I* instancePtr, void(I::* CallBack)(float))
 		{
-			temp.Add(instancePtr, CallBack);
+			WaitForAdd.Add(instancePtr, CallBack);
 		}
 
 		void RemoveFromGameCycle(void(*CallBack)(float))
 		{
-			temp.Remove(CallBack);
+			if (!WaitForAdd.Remove(CallBack))
+			{
+				Cycle.Remove(CallBack);
+			}
 		}
 		template<typename I>
 		void RemoveFromGameCycle(I* instancePtr, void(I::* CallBack)(float))
 		{
-			temp.Remove(instancePtr, CallBack);
+			if (!WaitForAdd.Remove(instancePtr, CallBack))
+			{
+				Cycle.Remove(instancePtr, CallBack);
+			}
 		}
 	};
 }

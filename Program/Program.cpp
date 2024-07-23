@@ -28,8 +28,8 @@ int main()
 	GameCycle = new GameCycleBase(); 
 	ITimer::gameCycle = GameCycle;
 
-	Metronome metronome(100.0f);
-	metronome.OnTick.Add(Print);
+	Metronome metronome(1.0f);
+	metronome.AfterCompelete.Add(Print);
 	metronome.Start();
 
 	thread t1(Tick);

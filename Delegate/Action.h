@@ -53,7 +53,7 @@ namespace Tools
 			{
 				if ((*it)->Equal(S))
 				{
-					delete* it;
+					delete (*it);
 					actions.erase(it);
 					return true;
 				}
@@ -69,7 +69,7 @@ namespace Tools
 			{
 				if ((*it)->Equal(M))
 				{
-					delete* it;
+					delete (*it);
 					actions.erase(it);
 					return true;
 				}
