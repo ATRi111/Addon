@@ -18,9 +18,12 @@ namespace Tools
 		}
 		void Invoke(Args... args)
 		{
-			for (IFunc<TResult, Args...>* F : funcs)
+			typename std::list<IFunc<TResult, Args...>*>::iterator it;
+			for (it = funcs.begin(); it != funcs.end(); )
 			{
-				F->Invoke(args...);
+				IFunc<TResult, Args...>* p = *it;
+				it++;	//even if p will be deleted in the code below ,it will not be effected 
+				p->Invoke(args...);
 			}
 		}
 		//get the return value of the first element in funcs

@@ -18,9 +18,12 @@ namespace Tools
 		}
 		void Invoke(Args... args)
 		{
-			for (IAction<Args...>* F : actions)
+			typename std::list<IAction<Args...>*>::iterator it;
+			for (it = actions.begin(); it != actions.end(); )
 			{
-				F->Invoke(args...);
+				IAction<Args...>*  p = *it;
+				it++;	//even if p will be deleted in the code below ,it will not be effected 
+				p->Invoke(args...);
 			}
 		}
 
