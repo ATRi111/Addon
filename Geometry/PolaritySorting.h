@@ -1,5 +1,4 @@
 #pragma once
-#define _USE_MATH_DEFINES
 #include<cmath>
 #include<unordered_set>
 #include<chrono>

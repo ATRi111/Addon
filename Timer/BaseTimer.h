@@ -49,7 +49,7 @@ namespace Tools
 		}
 	};
 
-	class TimerOnly : Timer<float, CurrentTime>
+	class TimerOnly : public Timer<float, CurrentTime>
 	{
 	public:
 		TimerOnly(float duration)
@@ -57,5 +57,10 @@ namespace Tools
 		{
 
 		}
+	};
+
+	class LinearTransformation : public Timer<float, FloatLerp>
+	{
+
 	};
 }
