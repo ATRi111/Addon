@@ -129,17 +129,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BaseTimer.h" />
-    <ClInclude Include="GameCycleBase.h" />
-    <ClInclude Include="ITimer.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Delegate\Delegate.vcxproj">
       <Project>{0a457b8a-4c15-43c4-aa65-2ce9cd435a6d}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseTimer.cpp" />
+    <ClInclude Include="BaseTimer.h" />
+    <ClInclude Include="GameCycleBase.h" />
+    <ClInclude Include="ILerp.h" />
+    <ClInclude Include="ITimer.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="TimerHeader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

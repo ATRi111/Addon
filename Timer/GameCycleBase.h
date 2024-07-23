@@ -12,8 +12,9 @@ namespace Tools
 	class GameCycleBase
 	{
 	protected:
-		std::unordered_map<EInvokeTiming, Action<>> cycle;
-		std::unordered_map<EInvokeTiming, Action<>> temp;
+		float deltaTime;
+		std::unordered_map<EInvokeTiming, Action<float>> cycle;
+		std::unordered_map<EInvokeTiming, Action<float>> temp;
 		virtual void Update()
 		{
 			for (auto& pair : temp)
@@ -21,30 +22,30 @@ namespace Tools
 				cycle.insert(std::move(pair));
 			}
 			temp.clear();
-			cycle[EInvokeTiming::Update].Invoke();
+			cycle[EInvokeTiming::Update].Invoke(deltaTime);
 		}
 	public:
-		GameCycleBase()
+		GameCycleBase(float deltaTime)
+			:deltaTime(deltaTime)
 		{
 
 		}
-
-		void AttachToGameCycle(void(*CallBack)(), EInvokeTiming timing = EInvokeTiming::Update)
+		void AttachToGameCycle(void(*CallBack)(float), EInvokeTiming timing = EInvokeTiming::Update)
 		{
 			temp[timing].Add(CallBack);
 		}
 		template<typename I>
-		void AttachToGameCycle(I* instancePtr, void(I::* CallBack)(), EInvokeTiming timing = EInvokeTiming::Update)
+		void AttachToGameCycle(I* instancePtr, void(I::* CallBack)(float), EInvokeTiming timing = EInvokeTiming::Update)
 		{
 			temp[timing].Add(instancePtr, &I::CallBack);
 		}
 
-		void RemoveFromGameCycle(void(*CallBack)(), EInvokeTiming timing = EInvokeTiming::Update)
+		void RemoveFromGameCycle(void(*CallBack)(float), EInvokeTiming timing = EInvokeTiming::Update)
 		{
 			temp[timing].Remove(CallBack);
 		}
 		template<typename I>
-		void RemoveFromGameCycle(I* instancePtr, void(I::* CallBack)(), EInvokeTiming timing = EInvokeTiming::Update)
+		void RemoveFromGameCycle(I* instancePtr, void(I::* CallBack)(float), EInvokeTiming timing = EInvokeTiming::Update)
 		{
 			temp[timing].Remove(instancePtr, &I::CallBack);
 		}

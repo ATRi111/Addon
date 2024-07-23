@@ -15,18 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ITimer.h">
+    <ClInclude Include="BaseTimer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GameCycleBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BaseTimer.h">
+    <ClInclude Include="ILerp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ITimer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseTimer.cpp">
+    <ClCompile Include="Timer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
