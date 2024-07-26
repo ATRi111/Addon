@@ -36,9 +36,12 @@
     <ClInclude Include="Action.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="EventSystemCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Delegate.cpp">
+    <ClCompile Include="EventSystemCore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

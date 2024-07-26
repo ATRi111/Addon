@@ -5,37 +5,33 @@
 using namespace std;
 using namespace Tools;
 
-GameCycleBase* GameCycle;
-bool finished;
-
-static void Tick()
+class Comparer
 {
-	using namespace std::literals::chrono_literals;
-	while (!finished)
-	{
-		GameCycle->Update(0.2f);
-		this_thread::sleep_for(0.2s);
-	}
-}
+public:
+    bool Compare(int a, int b)
+    {
+        return a > b;
+    }
+    void Test(int a, int b)
+    {
+        
+    }
+};
 
-static void Print(float time)
+void Print()
 {
-	cout << clock() << endl;
+
 }
 
 int main()
 {
-	GameCycle = new GameCycleBase(); 
-	ITimer::gameCycle = GameCycle;
+    Comparer c1, c2;
+    Action<int, int> a1;
+    
+    Action<int,int> a2;
 
-	Metronome metronome(1.0f);
-	metronome.AfterCompelete.Add(Print);
-	metronome.Start();
-
-	thread t1(Tick);
-	cin.get();
-	finished = true;
-	t1.join();
-
+    Delegate* d1 = &a1;
+    Delegate* d2 = &a2;
+    cout << d1->HasSameParameters(d2);
     return 0;
 }

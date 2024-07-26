@@ -16,6 +16,15 @@ namespace Tools
 		{
 			actions = std::list<IAction<Args...>*>();
 		}
+
+		~Action()
+		{
+			for (IAction<Args...>* p : actions)
+			{
+				delete p;
+			}
+		}
+
 		void Invoke(Args... args)
 		{
 			typename std::list<IAction<Args...>*>::iterator it;
@@ -90,16 +99,9 @@ namespace Tools
 			}
 			actions.clear();
 		}
-		int Count()
+		int Count() const
 		{
 			return actions.size();
-		}
-		~Action()
-		{
-			for (IAction<Args...>* p : actions)
-			{
-				delete p;
-			}
 		}
 	};
 }

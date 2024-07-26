@@ -95,7 +95,7 @@ namespace Tools
 			}
 			funcs.clear();
 		}
-		int Count()
+		int Count() const
 		{
 			return funcs.size();
 		}
