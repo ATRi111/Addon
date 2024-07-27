@@ -31,7 +31,9 @@ namespace Tools
 			return true;
 		}
 	public:
+		//functions to log error message
 		Action<std::string> OnLog;
+
 		EventSystemCore()
 		{
 		}
