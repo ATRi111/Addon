@@ -10,16 +10,16 @@ namespace Tools
 	protected:
 		Delegate()
 		{
-
-		}
-		virtual ~Delegate()
-		{
-			
 		}
 	public:
-		bool HasSameParameters(Delegate* other) const
+		virtual ~Delegate()
 		{
-			return typeid(*this) == typeid(*other);
 		}
+		bool HasSameParameters(Delegate* other) const;
+
+		template<typename ... Args>
+		bool MatchAction();
+		template<typename TResult,typename ... Args>
+		bool MatchFunc();
 	};
 }

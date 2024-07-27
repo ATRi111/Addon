@@ -141,7 +141,7 @@
     <ClInclude Include="IFunc.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EventSystemCore.cpp" />
+    <ClCompile Include="Delegate.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

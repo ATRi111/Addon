@@ -1,6 +1,8 @@
 #pragma once
 #include"Delegate.h"
+#include"Func.h"
 #include"IFunc.h"
+#include"Action.h"
 #include"IAction.h"
 
 namespace Tools
@@ -44,5 +46,21 @@ namespace Tools
 		if (p)
 			return p->operator==(other);
 		return false;
+	}
+
+	template<typename ...Args>
+	inline bool Delegate::MatchAction()
+	{
+		return typeid(*this) == typeid(Action<Args...>);
+	}
+	template<typename TResult, typename ...Args>
+	inline bool Delegate::MatchFunc()
+	{
+		return typeid(*this) == typeid(Func<TResult, Args...>);
+	}
+
+	bool Tools::Delegate::HasSameParameters(Delegate* other) const
+	{
+		return typeid(*this) == typeid(*other);
 	}
 }

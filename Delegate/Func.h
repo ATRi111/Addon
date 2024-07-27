@@ -27,7 +27,7 @@ namespace Tools
 			}
 		}
 		//get the return value of the first element in funcs
-		TResult FirstReturnValue(Args... args)
+		TResult operator()(Args... args)
 		{
 			return (*funcs.begin())->Invoke(args...);
 		}

@@ -14,24 +14,26 @@ public:
     }
     void Test(int a, int b)
     {
-        
+        cout << a << b << endl;
     }
 };
 
-void Print()
+void Print(string message)
 {
-
+    cout << message << endl;
 }
 
 int main()
 {
-    Comparer c1, c2;
-    Action<int, int> a1;
-    
-    Action<int,int> a2;
+    EventSystemCore core;
+    core.OnLog.Add(Print);
 
-    Delegate* d1 = &a1;
-    Delegate* d2 = &a2;
-    cout << d1->HasSameParameters(d2);
+    Comparer c1;
+    core.AddListener("Test", &c1, &Comparer::Test);
+    core.AddListener("Test", Print);
+    core.Invoke("Test", 1, 2);
+    core.RemoveListener("Test", &c1, &Comparer::Test);
+    core.Invoke("Test", 1, 2.0f);
+
     return 0;
 }
