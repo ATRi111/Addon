@@ -59,7 +59,7 @@ namespace Tools
 		return typeid(*this) == typeid(Func<TResult, Args...>);
 	}
 
-	bool Tools::Delegate::HasSameParameters(Delegate* other) const
+	bool Tools::Delegate::Match(Delegate* other) const
 	{
 		return typeid(*this) == typeid(*other);
 	}
