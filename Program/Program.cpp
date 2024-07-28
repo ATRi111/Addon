@@ -18,22 +18,30 @@ public:
     }
 };
 
-void Print(string message)
+bool Handle1(string message)
 {
-    cout << message << endl;
+    cout << "1:" << message << endl;
+    return false;
+}
+
+bool Handle2(string message)
+{
+    cout << "2:" << message << endl;
+    return true;
+}
+bool Handle3(string message)
+{
+    cout << "3:" << message << endl;
+    return false;
 }
 
 int main()
 {
-    EventSystemCore core;
-    core.OnLog.Add(Print);
+    LayeredFuncList<string> LF;
+    LF.Add(1, Handle1);
+    LF.Add(2, Handle2);
+    LF.Add(3, Handle3);
 
-    Comparer c1;
-    core.AddListener("Test", &c1, &Comparer::Test);
-    core.AddListener("Test", Print);
-    core.Invoke("Test", 1, 2);
-    core.RemoveListener("Test", &c1, &Comparer::Test);
-    core.Invoke("Test", 1, 2.0f);
-
+    LF.Invoke("Hello");
     return 0;
 }
