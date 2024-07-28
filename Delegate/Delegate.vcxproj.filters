@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IFunc.h">
+    <ClInclude Include="Func.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DelegateHeader.h">
@@ -24,19 +24,25 @@
     <ClInclude Include="Delegate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Equal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Func.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IAction.h">
+    <ClInclude Include="FuncList.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Action.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ActionList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="EventSystemCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LayeredFuncList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LayeredFunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Match.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

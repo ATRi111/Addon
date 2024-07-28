@@ -1,107 +1,67 @@
 #pragma once
-#include"IAction.h"
-#include"Delegate.h"
-#include<list>
+#include<functional>
 
 namespace Tools
 {
-	//a list of IAction 
 	template<typename ... Args>
-	class Action : public Delegate
+	class StaticAction;
+	template<typename I,typename ... Args>
+	class MemberAction;
+
+	//represents any function(including member function) without return value
+	template<typename ... Args>
+	class IAction
 	{
-		//this class takes ownership of actions; do not try to add existing pointer into actions
-		std::list<IAction<Args...>*> actions;
 	public:
-		Action()
-		{
-			actions = std::list<IAction<Args...>*>();
-		}
+		virtual void Invoke(Args... args) const = 0;
 
-		~Action()
-		{
-			for (IAction<Args...>* p : actions)
-			{
-				delete p;
-			}
-		}
-
-		void Invoke(Args... args)
-		{
-			typename std::list<IAction<Args...>*>::iterator it;
-			for (it = actions.begin(); it != actions.end(); )
-			{
-				IAction<Args...>*  p = *it;
-				it++;	//p might remove itself while being invoked 
-				p->Invoke(args...);
-			}
-		}
-
-		void Add(void(*F)(Args...))
-		{
-			StaticAction<Args...>* p = new StaticAction<Args...>(F);
-			actions.push_back(p);
-		}
+		bool Equal(void(*F)(Args...));
 		template<typename I>
-		void Add(I* instancePtr, void(I::* F)(Args...))
+		bool Equal(I* instancePtr, void(I::* F)(Args...));
+	};
+
+	//represents a static/global function without return value
+	template<typename ... Args>
+	class StaticAction :public IAction<Args...>
+	{
+		void(*F)(Args...);
+
+	public:
+		StaticAction(void(*F)(Args...))
+			:F(F)
 		{
-			MemberAction<I, Args...>* p = new MemberAction<I, Args...>(instancePtr, F);
-			actions.push_back(p);
+
 		}
-		
-		void MoveTo(Action<Args ...>& other)
+		void Invoke(Args... args) const override
 		{
-			for (IAction<Args...>* p : actions)
-			{
-				other.actions.push_back(p);
-			}
-			actions.clear();
+			return F(args...);
 		}
-		//WARN: it is dangerous for an IAction to call Remove;
-		//an IAction can only remove ITSELF from Action
-		bool Remove(void(*F)(Args...))
+		bool Equal(void(*F)(Args...)) const
 		{
-			StaticAction<Args...> S = StaticAction<Args...>(F);
-			typename std::list<IAction<Args...>*>::iterator it;
-			for (it = actions.begin(); it != actions.end(); it++)
-			{
-				if ((*it)->Equal(S))
-				{
-					delete (*it);
-					actions.erase(it);
-					return true;
-				}
-			}
-			return false;
+			return this->F == F;
 		}
-		//WARN: it is dangerous for an IAction to call Remove;
-		//an IAction can only remove ITSELF from Action
-		template<typename I>
-		bool Remove(I* instancePtr, void(I::* F)(Args...))
+	};
+
+	//represents a member function without return value; I represetns the class of the instance
+	template<typename I, typename ... Args>
+	class MemberAction :public IAction<Args...>
+	{
+		void(I::* F)(Args...);
+		I* instancePtr;
+
+	public:
+		MemberAction(I* instancePtr, void(I::* F)(Args...))
+			:F(F), instancePtr(instancePtr)
 		{
-			MemberAction<I, Args...> M(instancePtr, F);
-			typename std::list<IAction<Args...>*>::iterator it;
-			for (it = actions.begin(); it != actions.end(); it++)
-			{
-				if ((*it)->Equal(M))
-				{
-					delete (*it);
-					actions.erase(it);
-					return true;
-				}
-			}
-			return false;
+
 		}
-		void Clear()
+		void Invoke(Args... args) const override
 		{
-			for (IAction<Args...>* p : actions)
-			{
-				delete p;
-			}
-			actions.clear();
+			return (instancePtr->*F)(args...);
 		}
-		int Count() const
+		bool Equal(I* instancePtr, void(I::* F)(Args...))
 		{
-			return actions.size();
+			return this->instancePtr == instancePtr && this->F == F;
 		}
 	};
 }

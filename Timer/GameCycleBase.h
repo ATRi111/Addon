@@ -8,8 +8,8 @@ namespace Tools
 	class GameCycleBase
 	{
 	protected:
-		Action<float> Cycle;
-		Action<float> WaitForAdd;
+		ActionList<float> Cycle;
+		ActionList<float> WaitForAdd;
 	public:
 		virtual void Update(float deltaTime)
 		{

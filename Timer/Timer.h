@@ -20,10 +20,10 @@ namespace Tools
         void Tick(float deltaTime);
         void SetCompleted(bool value);
     public:
-        Action<TValue> BeforePause;
-        Action<TValue> BeforeResume;
-        Action<TValue> AfterCompelete;
-        Action<TValue> OnTick;
+        ActionList<TValue> BeforePause;
+        ActionList<TValue> BeforeResume;
+        ActionList<TValue> AfterCompelete;
+        ActionList<TValue> OnTick;
 
         Timer(TValue origin, TValue target, float duration)
             :origin(origin), target(target), duration(duration), time(0), paused(true), completed(false)

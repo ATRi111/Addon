@@ -1,7 +1,4 @@
 #pragma once
-#include <tuple>
-#include <typeindex>
-#include <typeinfo>
 
 namespace Tools
 {
@@ -19,11 +16,11 @@ namespace Tools
 		//check whether the parameters match with another Delegate*
 		bool Match(Delegate* other) const;
 
-		//check whether the parameters match with Action<Args...>
+		//check whether the parameters match with ActionList<Args...>
 		template<typename ... Args>
 		bool MatchAction();
 
-		//check whether the parameters match with Func<TResult,Args...>
+		//check whether the parameters match with FuncList<TResult,Args...>
 		template<typename TResult,typename ... Args>
 		bool MatchFunc();
 	};

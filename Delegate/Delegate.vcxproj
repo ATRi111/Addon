@@ -131,14 +131,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Action.h" />
+    <ClInclude Include="ActionList.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="DelegateHeader.h" />
-    <ClInclude Include="Equal.h" />
     <ClInclude Include="EventSystemCore.h" />
+    <ClInclude Include="FuncList.h" />
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Func.h" />
-    <ClInclude Include="IAction.h" />
-    <ClInclude Include="IFunc.h" />
+    <ClInclude Include="LayeredFuncList.h" />
+    <ClInclude Include="LayeredFunc.h" />
+    <ClInclude Include="Match.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Delegate.cpp" />

@@ -1,110 +1,65 @@
 #pragma once
-#include"IFunc.h"
-#include"Delegate.h"
-#include<list>
+#include<functional>
 
 namespace Tools
 {
-	//a list of IFunc 
 	template<typename TResult, typename ... Args>
-	class Func : public Delegate
+	class StaticFunc;
+	template<typename I, typename TResult, typename ... Args>
+	class MemberFunc;
+
+	//represents any function(including member function) with a return value
+	template<typename TResult,typename ... Args>
+	class IFunc
 	{
-		//this class takes ownership of funcs; do not try to add existing pointer into funcs
-		std::list<IFunc<TResult, Args...>*> funcs;
 	public:
-		Func()
-		{
-			funcs = std::list<IFunc<TResult, Args...>*>();
-		}
-		void Invoke(Args... args)
-		{
-			typename std::list<IFunc<TResult, Args...>*>::iterator it;
-			for (it = funcs.begin(); it != funcs.end(); )
-			{
-				IFunc<TResult, Args...>* p = *it;
-				it++;	//p might remove itself while being invoked
-				p->Invoke(args...);
-			}
-		}
-		//get the return value of the first element in funcs
-		TResult operator()(Args... args)
-		{
-			return (*funcs.begin())->Invoke(args...);
-		}
+		virtual TResult Invoke(Args... args) const = 0;
 
-		void Add(TResult(*F)(Args...))
-		{
-			StaticFunc<TResult, Args...>* p = new StaticFunc<TResult, Args...>(F);
-			funcs.push_back(p);
-		}
+		bool Equal(TResult(*F)(Args...));
 		template<typename I>
-		void Add(I* instancePtr, TResult(I::* F)(Args...))
-		{
-			MemberFunc<I, TResult, Args...>* p = new MemberFunc<I, TResult, Args...>(instancePtr, F);
-			funcs.push_back(p);
-		}
+		bool Equal(I* instancePtr, TResult(I::* F)(Args...));
+	};
 
-		void MoveTo(Func<TResult, Args ...>& other)
+	//represents a static/global function with a return value
+	template<typename TResult, typename ... Args>
+	class StaticFunc :public IFunc<TResult, Args...>
+	{
+		TResult(*F)(Args...);
+	public:
+		StaticFunc(TResult(*F)(Args...))
+			:F(F)
 		{
-			for (IFunc<TResult, Args...>* p : funcs)
-			{
-				other.funcs.push_back(p);
-			}
-			funcs.clear();
+
 		}
-		//WARN: it is dangerous for an IFunc to call Remove;
-		//an IFunc can only remove ITSELF from Func
-		bool Remove(TResult(*F)(Args...))
+		TResult Invoke(Args... args) const override
 		{
-			StaticFunc<TResult, Args...> S = StaticFunc<TResult, Args...>(F);
-			typename std::list<IFunc<TResult, Args...>*>::iterator it;
-			for (it = funcs.begin(); it != funcs.end(); it++)
-			{
-				if ((*it)->Equal(S))
-				{
-					delete (*it);
-					funcs.erase(it);
-					return true;
-				}
-			}
-			return false;
+			return F(args...);
 		}
-		//WARN: it is dangerous for an IFunc to call Remove;
-		//an IFunc can only remove ITSELF from Func
-		template<typename I>
-		bool Remove(I* instancePtr, TResult(I::* F)(Args...))
+		bool Equal(TResult(*F)(Args...)) const
 		{
-			MemberFunc<I, TResult, Args...> M(instancePtr, F);
-			typename std::list<IFunc<TResult, Args...>*>::iterator it;
-			for (it = funcs.begin(); it != funcs.end(); it++)
-			{
-				if ((*it)->Equal(M))
-				{
-					delete (*it);
-					funcs.erase(it);
-					return true;
-				}
-			}
-			return false;
+			return this->F == F;
 		}
-		void Clear()
+	};
+
+	//represents a member function with a return value; I represetns the class of the instance
+	template<typename I, typename TResult,typename ... Args>
+	class MemberFunc :public IFunc<TResult, Args...>
+	{
+		TResult(I::*F)(Args...);
+		I* instancePtr;
+	public:
+		MemberFunc(I* instancePtr, TResult(I::* F)(Args...))
+			:F(F), instancePtr(instancePtr)
 		{
-			for (IFunc<TResult, Args...>* p : funcs)
-			{
-				delete p;
-			}
-			funcs.clear();
+
 		}
-		int Count() const
+		TResult Invoke(Args... args) const override
 		{
-			return funcs.size();
+			return (instancePtr->*F)(args...);
 		}
-		~Func()
+		bool Equal(I* instancePtr, TResult(I::* F)(Args...)) const
 		{
-			for (IFunc<TResult, Args...>* p : funcs)
-			{
-				delete p;
-			}
+			return this->instancePtr == instancePtr && this->F == F;
 		}
 	};
 }

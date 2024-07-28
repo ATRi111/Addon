@@ -2,7 +2,7 @@
 #include<unordered_map>
 #include<string>
 #include"Delegate.h"
-#include"Action.h"
+#include"ActionList.h"
 
 namespace Tools
 {
@@ -26,13 +26,13 @@ namespace Tools
 				return false;
 			}
 
-			Delegate* d = new Action<Args...>();
+			Delegate* d = new ActionList<Args...>();
 			events.emplace(eventName, d);
 			return true;
 		}
 	public:
 		//functions to log error message
-		Action<std::string> OnLog;
+		ActionList<std::string> OnLog;
 
 		EventSystemCore()
 		{
@@ -50,7 +50,7 @@ namespace Tools
 		{
 			if (Check<Args...>(eventName))
 			{
-				Action<Args...>* a = dynamic_cast<Action<Args...>*>(events[eventName]);
+				ActionList<Args...>* a = dynamic_cast<ActionList<Args...>*>(events[eventName]);
 				a->Add(F);
 			}
 		}
@@ -59,7 +59,7 @@ namespace Tools
 		{
 			if (Check<Args...>(eventName))
 			{
-				Action<Args...>* a = dynamic_cast<Action<Args...>*>(events[eventName]);
+				ActionList<Args...>* a = dynamic_cast<ActionList<Args...>*>(events[eventName]);
 				a->Add(instancePtr, F);
 			}
 		}
@@ -69,7 +69,7 @@ namespace Tools
 		{
 			if (Check<Args...>(eventName))
 			{
-				Action<Args...>* a = dynamic_cast<Action<Args...>*>(events[eventName]);
+				ActionList<Args...>* a = dynamic_cast<ActionList<Args...>*>(events[eventName]);
 				return a->Remove(F);
 			}
 			return false;
@@ -80,7 +80,7 @@ namespace Tools
 		{
 			if (Check<Args...>(eventName))
 			{
-				Action<Args...>* a = dynamic_cast<Action<Args...>*>(events[eventName]);
+				ActionList<Args...>* a = dynamic_cast<ActionList<Args...>*>(events[eventName]);
 				return a->Remove(instancePtr, F);
 			}
 			return false;
@@ -91,7 +91,7 @@ namespace Tools
 		{
 			if (Check<Args...>(eventName))
 			{
-				Action<Args...>* a = dynamic_cast<Action<Args...>*>(events[eventName]);
+				ActionList<Args...>* a = dynamic_cast<ActionList<Args...>*>(events[eventName]);
 				a->Invoke(args...);
 			}
 		}
