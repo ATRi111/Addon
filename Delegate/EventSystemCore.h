@@ -45,6 +45,7 @@ namespace Tools
 			}
 		}
 
+		//subscribe to an event (the event is automatically created on first accessing)
 		template<typename ... Args>
 		void AddListener(std::string eventName, void(*F)(Args...))
 		{
@@ -54,6 +55,7 @@ namespace Tools
 				a->Add(F);
 			}
 		}
+		//subscribe to an event (the event is automatically created on first accessing)
 		template<typename I, typename ... Args>
 		void AddListener(std::string eventName, I* instancePtr, void(I::* F)(Args...)) 
 		{
@@ -64,6 +66,7 @@ namespace Tools
 			}
 		}
 
+		//unsubscribe from an event (the event is automatically created on first accessing)
 		template<typename ... Args>
 		bool RemoveListener(std::string eventName, void(*F)(Args...))
 		{
@@ -74,6 +77,7 @@ namespace Tools
 			}
 			return false;
 		}
+		//unsubscribe from an event (the event is created automatically on first accessing)
 		template<typename I, typename ... Args>
 		bool RemoveListener(std::string eventName, I* instancePtr, void(I::* F)(Args...))
 
@@ -86,6 +90,7 @@ namespace Tools
 			return false;
 		}
 
+		//an event occurs (the event is automatically created on first accessing)
 		template<typename ... Args>
 		void Invoke(std::string eventName, Args... args)
 		{

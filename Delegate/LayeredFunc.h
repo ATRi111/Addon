@@ -3,12 +3,13 @@
 
 namespace Tools
 {
+	//an IFunc that can be sorted by layerValue
 	template<typename ... Args>
 	class LayeredFunc
 	{
 		IFunc<bool, Args...>* F;
 	public:
-		//higher layer has greater layerValue
+		//higher layer should have greater layerValue
 		int layerValue;
 
 		static bool Comparer(const LayeredFunc<Args...>& a, const LayeredFunc<Args...>& b)

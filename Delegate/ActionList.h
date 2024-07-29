@@ -15,13 +15,25 @@ namespace Tools
 		{
 			actions = std::list<IAction<Args...>*>();
 		}
-
 		~ActionList()
 		{
 			for (IAction<Args...>* p : actions)
 			{
 				delete p;
 			}
+		}
+		
+		void Clear()
+		{
+			for (IAction<Args...>* p : actions)
+			{
+				delete p;
+			}
+			actions.clear();
+		}
+		int Count() const
+		{
+			return actions.size();
 		}
 
 		void Invoke(Args... args)
@@ -55,7 +67,7 @@ namespace Tools
 			}
 			actions.clear();
 		}
-		//WARN: it is dangerous for an IAction to call Remove;
+		//WARN: it is dangerous to call Remove in IAction::Invoke;
 		//an IAction can only remove ITSELF from ActionList
 		bool Remove(void(*F)(Args...))
 		{
@@ -71,7 +83,7 @@ namespace Tools
 			}
 			return false;
 		}
-		//WARN: it is dangerous for an IAction to call Remove;
+		//WARN: it is dangerous to call Remove in IAction::Invoke;
 		//an IAction can only remove ITSELF from ActionList
 		template<typename I>
 		bool Remove(I* instancePtr, void(I::* F)(Args...))
@@ -88,18 +100,6 @@ namespace Tools
 				}
 			}
 			return false;
-		}
-		void Clear()
-		{
-			for (IAction<Args...>* p : actions)
-			{
-				delete p;
-			}
-			actions.clear();
-		}
-		int Count() const
-		{
-			return actions.size();
 		}
 	};
 }

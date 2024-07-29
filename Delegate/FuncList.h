@@ -15,6 +15,27 @@ namespace Tools
 		{
 			funcs = std::list<IFunc<TResult, Args...>*>();
 		}
+		~FuncList()
+		{
+			for (IFunc<TResult, Args...>* p : funcs)
+			{
+				delete p;
+			}
+		}
+
+		int Count() const
+		{
+			return funcs.size();
+		}
+		void Clear()
+		{
+			for (IFunc<TResult, Args...>* p : funcs)
+			{
+				delete p;
+			}
+			funcs.clear();
+		}
+
 		void Invoke(Args... args)
 		{
 			typename std::list<IFunc<TResult, Args...>*>::iterator it;
@@ -51,7 +72,7 @@ namespace Tools
 			}
 			funcs.clear();
 		}
-		//WARN: it is dangerous for an IFunc to call Remove;
+		//WARN: it is dangerous to call Remove in IFunc::Invoke;
 		//an IFunc can only remove ITSELF from FuncList
 		bool Remove(TResult(*F)(Args...))
 		{
@@ -67,7 +88,7 @@ namespace Tools
 			}
 			return false;
 		}
-		//WARN: it is dangerous for an IFunc to call Remove;
+		//WARN: it is dangerous to call Remove in IFunc::Invoke;
 		//an IFunc can only remove ITSELF from FuncList
 		template<typename I>
 		bool Remove(I* instancePtr, TResult(I::* F)(Args...))
@@ -83,25 +104,6 @@ namespace Tools
 				}
 			}
 			return false;
-		}
-		void Clear()
-		{
-			for (IFunc<TResult, Args...>* p : funcs)
-			{
-				delete p;
-			}
-			funcs.clear();
-		}
-		int Count() const
-		{
-			return funcs.size();
-		}
-		~FuncList()
-		{
-			for (IFunc<TResult, Args...>* p : funcs)
-			{
-				delete p;
-			}
 		}
 	};
 }

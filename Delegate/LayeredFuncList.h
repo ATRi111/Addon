@@ -8,7 +8,6 @@ namespace Tools
 	template<typename ... Args>
 	class LayeredFuncList
 	{
-		//this class takes ownership of funcs; do not try to add existing pointer into funcs
 		std::list<LayeredFunc<Args...>> funcs;
 	public:
 		LayeredFuncList()
@@ -20,15 +19,25 @@ namespace Tools
 
 		}
 
+		void Clear()
+		{
+			funcs.clear();
+		}
+		int Count() const
+		{
+			return funcs.size();
+		}
+
+		//Invoking would be interrupted if a LayeredFunc returns true
 		void Invoke(Args... args)
 		{
 			typename std::list<LayeredFunc<Args...>>::iterator it;
 			for (it = funcs.begin(); it != funcs.end(); )
 			{
-				LayeredFunc<Args...>& a = *it;
+				LayeredFunc<Args...>* a = it;
 				it++;	//a might remove itself while being invoked 
-				if (a.Invoke(args...))
-					break;	//interrupted
+				if (a->Invoke(args...))
+					break;
 			}
 		}
 
@@ -44,8 +53,7 @@ namespace Tools
 			funcs.sort(LayeredFunc<Args...>::Comparer);
 		}
 
-		//WARN: it is dangerous for an IFunc to call Remove;
-		//an IFunc can only remove ITSELF from LayeredFuncList
+		//WARN: do not call Remove in LayeredFunc::Invoke since invoking might be interrupted
 		bool Remove(void(*F)(Args...))
 		{
 			typename std::list<LayeredFunc<Args...>>::iterator it;
@@ -59,8 +67,7 @@ namespace Tools
 			}
 			return false;
 		}
-		//WARN: it is dangerous for an IAction to call Remove;
-		//an IAction can only remove ITSELF from LayeredFuncList
+		//WARN: do not call Remove in LayeredFunc::Invoke since invoking might be interrupted
 		template<typename I>
 		bool Remove(I* instancePtr, bool(I::* F)(Args...))
 		{
@@ -74,14 +81,6 @@ namespace Tools
 				}
 			}
 			return false;
-		}
-		void Clear()
-		{
-			funcs.clear();
-		}
-		int Count() const
-		{
-			return funcs.size();
 		}
 	};
 }
