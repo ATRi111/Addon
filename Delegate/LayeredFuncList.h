@@ -34,10 +34,9 @@ namespace Tools
 			typename std::list<LayeredFunc<Args...>>::iterator it;
 			for (it = funcs.begin(); it != funcs.end(); )
 			{
-				LayeredFunc<Args...>* a = it;
-				it++;	//a might remove itself while being invoked 
-				if (a->Invoke(args...))
+				if (it->Invoke(args...))
 					break;
+				it++;
 			}
 		}
 
