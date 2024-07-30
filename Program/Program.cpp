@@ -5,43 +5,39 @@
 using namespace std;
 using namespace Tools;
 
-class Comparer
+class Father
 {
-public:
-    bool Compare(int a, int b)
-    {
-        return a > b;
-    }
-    void Test(int a, int b)
-    {
-        cout << a << b << endl;
-    }
 };
 
-bool Handle1(string message)
+class Son : public Father
 {
-    cout << "1:" << message << endl;
-    return false;
+
+};
+
+void Test1(Father f)
+{
+    cout << "father" << endl;
+}
+void Test2(Son s)
+{
+    cout << "son" << endl;
 }
 
-bool Handle2(string message)
+void Log(string message)
 {
-    cout << "2:" << message << endl;
-    return true;
-}
-bool Handle3(string message)
-{
-    cout << "3:" << message << endl;
-    return false;
+    cout << message << endl;
 }
 
 int main()
 {
-    LayeredFuncList<string> LF;
-    LF.Add(1, Handle1);
-    LF.Add(2, Handle2);
-    LF.Add(3, Handle3);
+    EventSystemCore core;
+    core.OnLog.Add(Log);
+    core.AddListener("Test", Test1);
+    core.AddListener("Test", Test2);//错误
 
-    LF.Invoke("Hello");
+    Son s;
+
+    core.Invoke("Test", s);         //错误
+    core.Invoke<Father>("Test", s);
     return 0;
 }
